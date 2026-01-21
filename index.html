@@ -1,288 +1,134 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulador - Lei do Bem (Lucro Real) | Specialità</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Simulador - Lei do Bem (Lucro Real) | Specialità</title>
 
-  <style>
-    :root{
-      --bg0:#070b14;
-      --bg1:#0a1020;
-      --border:rgba(255,255,255,.08);
-      --muted:rgba(255,255,255,.68);
-      --text:rgba(255,255,255,.92);
-      --title:rgba(255,255,255,.95);
-      --radius:18px;
-      --radius2:14px;
-      --focus: rgba(125, 211, 252, .45);
-      --ok:#22c55e;
-      --warn:#f59e0b;
-      --bad:#ef4444;
-    }
+<style>
+:root{
+  --bg0:#070b14;
+  --bg1:#0a1020;
+  --border:rgba(255,255,255,.08);
+  --text:rgba(255,255,255,.92);
+  --title:rgba(255,255,255,.95);
+  --radius:18px;
+  --radius2:14px;
+  --focus: rgba(125, 211, 252, .45);
+  --ok:#22c55e;
+  --warn:#f59e0b;
+  --bad:#ef4444;
+}
 
-    *{box-sizing:border-box}
+*{box-sizing:border-box}
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-      height: auto;
-      overflow-y: auto;
-    }
+html, body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+  height:auto;
+  overflow-y:auto;
+}
 
-    body{
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", Helvetica, sans-serif;
-      color: var(--text);
+body{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 700px at 25% 10%, rgba(56,189,248,.18), transparent 55%),
+    radial-gradient(900px 600px at 80% 20%, rgba(99,102,241,.14), transparent 55%),
+    linear-gradient(135deg, #0a0f1e, #0f1b2d);
+  padding:34px 18px 56px;
+}
 
-      background:
-        radial-gradient(1200px 700px at 25% 10%, rgba(56,189,248,.18), transparent 55%),
-        radial-gradient(900px 600px at 80% 20%, rgba(99,102,241,.14), transparent 55%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
+.wrap{max-width:1180px;margin:0 auto;}
 
-      padding:34px 18px 56px;
-    }
+h1{font-size:28px;margin:0;color:var(--title)}
+.sub{color:rgba(255,255,255,.7)}
 
-    .wrap{
-      max-width:1180px;
-      margin:0 auto;
-    }
+.panel{
+  background:rgba(255,255,255,.03);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px;
+  margin-top:18px;
+}
 
-    header{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      margin-bottom:18px;
-    }
+label{font-size:12px;color:#ccc}
+input,select{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #333;
+  background:#0a0f1e;
+  color:white;
+}
 
-    .brand{
-      letter-spacing:.2em;
-      text-transform:uppercase;
-      font-size:12px;
-      color:rgba(255,255,255,.75);
-    }
+button{
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid #444;
+  background:#1e293b;
+  color:white;
+  cursor:pointer;
+}
 
-    h1{
-      font-size:28px;
-      line-height:1.15;
-      margin:0;
-      color:var(--title);
-      font-weight:750;
-    }
+.card{
+  background:#0b1220;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
 
-    .sub{
-      color:rgba(255,255,255,.70);
-      margin:0;
-      font-size:14px;
-      max-width:900px;
-    }
-
-    .top-actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin:14px 0 22px;
-    }
-
-    .btn{
-      border:1px solid var(--border);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      color:var(--text);
-      padding:10px 14px;
-      border-radius:12px;
-      cursor:pointer;
-      font-weight:650;
-      font-size:13px;
-    }
-
-    .btn.primary{
-      border-color:rgba(56,189,248,.35);
-      background:linear-gradient(180deg, rgba(56,189,248,.18), rgba(56,189,248,.08));
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap:18px;
-    }
-
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
-    }
-
-    .panel{
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      overflow:hidden;
-    }
-
-    .panel .hd{
-      padding:16px 18px;
-      border-bottom:1px solid var(--border);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-
-    .panel .bd{padding:16px 18px 18px}
-
-    .section{
-      background:rgba(0,0,0,.14);
-      border:1px solid rgba(255,255,255,.07);
-      border-radius:var(--radius2);
-      padding:14px;
-      margin-bottom:12px;
-    }
-
-    label{
-      font-size:12px;
-      color:rgba(255,255,255,.72);
-      margin-bottom:6px;
-      display:block;
-    }
-
-    input, select{
-      width:100%;
-      padding:12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(7,10,20,.55);
-      color:var(--text);
-    }
-
-    .row{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-
-    .card{
-      background:rgba(0,0,0,.14);
-      border:1px solid rgba(255,255,255,.07);
-      border-radius:var(--radius2);
-      padding:14px;
-      margin-bottom:12px;
-    }
-
-    .card .k{font-size:12px;color:rgba(255,255,255,.70)}
-    .card .v{font-size:22px;font-weight:900}
-  </style>
+.v{font-size:22px;font-weight:800}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">SPECIALITÀ CONSULTORIA TRIBUTÁRIA</div>
-      <h1>Simulador - Lei do Bem (Lucro Real)</h1>
-      <p class="sub">Estimativa de economia fiscal com exclusão adicional (IRPJ + CSLL).</p>
+<div class="wrap">
 
-      <div class="top-actions">
-        <button class="btn primary" onclick="exemplo()">Carregar exemplo</button>
-        <button class="btn" onclick="limpar()">Limpar</button>
-      </div>
-    </header>
+<h1>Simulador - Lei do Bem (Lucro Real)</h1>
+<p class="sub">Estimativa de exclusão adicional e economia fiscal (IRPJ + CSLL)</p>
 
-    <div class="grid">
-      <section class="panel">
-        <div class="hd"><h2>Dados</h2></div>
-        <div class="bd">
+<div class="panel">
+  <label>Dispêndios totais (R$)</label>
+  <input id="dispTotal" placeholder="1500000">
 
-          <div class="section">
-            <div class="row">
-              <div>
-                <label>Dispêndios elegíveis (R$)</label>
-                <input id="dispTotal" placeholder="1500000">
-              </div>
-              <div>
-                <label>Dispêndios com patente (R$)</label>
-                <input id="dispPatente" placeholder="400000">
-              </div>
-            </div>
-          </div>
+  <label style="margin-top:10px">Dispêndios com patente (R$)</label>
+  <input id="dispPatente" placeholder="400000">
 
-          <div class="section">
-            <div class="row">
-              <div>
-                <label>Variação de pesquisadores</label>
-                <select id="variacao">
-                  <option value="0">Sem aumento</option>
-                  <option value="1">Aumento moderado</option>
-                  <option value="2">Aumento relevante</option>
-                </select>
-              </div>
-              <div>
-                <label>Alíquota efetiva (%)</label>
-                <input id="aliquota" value="34">
-              </div>
-            </div>
-          </div>
+  <label style="margin-top:10px">Variação de pesquisadores</label>
+  <select id="variacao">
+    <option value="0">Sem aumento</option>
+    <option value="1">Aumento moderado</option>
+    <option value="2">Aumento relevante</option>
+  </select>
 
-        </div>
-      </section>
+  <label style="margin-top:10px">Alíquota IRPJ + CSLL (%)</label>
+  <input id="aliquota" value="34">
 
-      <section class="panel">
-        <div class="hd">
-          <h2>Resultado</h2>
-          <button class="btn primary" onclick="calcular()">Calcular</button>
-        </div>
-        <div class="bd">
+  <button style="margin-top:14px" onclick="calcular()">Calcular</button>
+</div>
 
-          <div class="card">
-            <div class="k">Exclusão total</div>
-            <div class="v" id="outTotal">-</div>
-          </div>
-
-          <div class="card">
-            <div class="k">Economia fiscal estimada</div>
-            <div class="v" id="outEconomia">-</div>
-          </div>
-
-        </div>
-      </section>
-    </div>
+<div class="panel">
+  <div class="card">
+    <div>Exclusão total</div>
+    <div class="v" id="outTotal">-</div>
   </div>
 
+  <div class="card">
+    <div>Economia fiscal</div>
+    <div class="v" id="outEconomia">-</div>
+  </div>
+</div>
+
+</div>
+
 <script>
-function parse(v){
-  return parseFloat(String(v).replace(/\./g,"").replace(",", ".")) || 0;
+function parseNumber(v){
+  if(!v) return 0;
+  return parseFloat(v.replace(/\./g,"").replace(",",".")) || 0;
 }
 
 function calcular(){
-  const disp = parse(dispTotal.value);
-  const pat = parse(dispPatente.value);
-  const aliq = parse(aliquota.value) || 34;
-  const varp = variacao.value;
-
-  let pct = 0.60;
-  if(varp==="1") pct = 0.70;
-  if(varp==="2") pct = 0.80;
-
-  const base = disp * pct;
-  const patEx = pat * 0.20;
-  const total = base + patEx;
-  const eco = total * (aliq/100);
-
-  outTotal.innerText = total.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-  outEconomia.innerText = eco.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-}
-
-function limpar(){
-  dispTotal.value="";
-  dispPatente.value="";
-  variacao.value="0";
-  aliquota.value="34";
-  outTotal.innerText="-";
-  outEconomia.innerText="-";
-}
-
-function exemplo(){
-  dispTotal.value="1500000";
-  dispPatente.value="400000";
-  variacao.value="1";
-  aliquota.value="34";
-  calcular();
-}
-</script>
-</body>
-</html>
+  const dispTotal = parseNumber(document.getElementById("dispTotal").value);
+  const dispPatente = p
