@@ -33,8 +33,18 @@
         radial-gradient(1200px 700px at 25% 10%, rgba(56,189,248,.18), transparent 55%),
         radial-gradient(900px 600px at 80% 20%, rgba(99,102,241,.14), transparent 55%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
-      min-height:100vh;
-      padding:34px 18px 56px;
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    height: auto;
+    overflow-y: auto;
+}
+
+body {
+    background: linear-gradient(135deg, #0a0f1e, #0f1b2d);
+    font-family: "Segoe UI", Arial, sans-serif;
+}      padding:34px 18px 56px;
     }
 
     .wrap{
